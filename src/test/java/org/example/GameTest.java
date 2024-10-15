@@ -158,6 +158,24 @@ public class GameTest {
         // We are not implementing the trimming part yet (handled later in UC-03)
     }
 
+    @Test
+    public void RESP_8_test_1_handleProsperityEvent() {
+        // Ensure all players start with 12 cards
+        for (Player player : game.getPlayers()) {
+            assertEquals(12, player.getHand().size(), "Each player should start with 12 cards");
+        }
+
+        // Simulate drawing the "Prosperity" event card
+        EventCard prosperityCard = new EventCard("Prosperity");
+        game.handleEventCard(prosperityCard, null);  // We don't need to pass a specific player
+
+        // Assert: Each player should now have 14 cards
+        for (Player player : game.getPlayers()) {
+            assertEquals(14, player.getHand().size(), "Each player should have 14 cards after Prosperity event");
+        }
+
+        // Assert: If a player exceeds 12 cards, they need to trim (handled later in UC-03)
+    }
 
     @AfterEach
     public void restoreStreams() {
