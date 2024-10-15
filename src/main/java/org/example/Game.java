@@ -76,6 +76,25 @@ public class Game {
         return winners;
     }
 
+    public void displayWinnersAndTerminate() {
+        List<Player> winners = checkForWinners();
+
+        if (winners.isEmpty()) {
+            System.out.println("No winners this time.");
+        } else {
+            System.out.print("Winners: ");
+            for (int i = 0; i < winners.size(); i++) {
+                System.out.print("Player " + (players.indexOf(winners.get(i)) + 1));
+                if (i < winners.size() - 1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println();
+        }
+
+        System.out.println("Game Over");
+    }
+
     public List<Card> getAdventureDeck() {
         return adventureDeck;
     }
