@@ -103,6 +103,18 @@ public class Game {
         return null;  // Return null if the deck is empty (though this shouldn't happen in normal play)
     }
 
+    public void handleEventCard(EventCard card, Player currentPlayer) {
+        // Handle the event based on its type
+        if ("Plague".equals(card.getEventName())) {
+            // Plague: Current player loses 2 shields
+            currentPlayer.setShields(currentPlayer.getShields() - 2);
+        } else {
+            // Handle other events as necessary
+            System.out.println("Unknown event: " + card.getEventName());
+        }
+    }
+
+
     public List<Card> getAdventureDeck() {
         return adventureDeck;
     }
