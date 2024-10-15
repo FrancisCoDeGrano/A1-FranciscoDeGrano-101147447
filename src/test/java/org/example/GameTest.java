@@ -259,6 +259,33 @@ public class GameTest {
         assertFalse(game.isPlayerEligibleForQuest(player3), "Player 3 should not be eligible for the quest after withdrawing");
     }
 
+    @Test
+    public void RESP_13_Test_1_discardUsedCardsAndDrawReplacements() {
+        // Assume Player 1 agrees to sponsor the quest
+        Player sponsor = game.getPlayers().get(0);
+        QuestCard questCard = new QuestCard(3);  // A quest with 3 stages
+        game.startPlayerTurnWithEventCard(sponsor, questCard);  // Initiates quest
+
+        // Simulate the sponsor setting up the quest
+        game.sponsorSetUpQuest(sponsor, questCard);
+
+        // Simulate players using some cards during the quest
+        Player player2 = game.getPlayers().get(1);
+        game.playerUsesCardsForQuest(player2, 3);  // Player 2 uses 3 cards
+        Player player4 = game.getPlayers().get(3);
+        game.playerUsesCardsForQuest(player4, 2);  // Player 4 uses 2 cards
+
+        // Discard used cards and allow players to draw replacements
+        game.discardUsedCardsAndDrawReplacements();
+
+        // Assert: Players should have their hand size restored to 12 cards
+        assertEquals(12, player2.getHand().size(), "Player 2 should have 12 cards after drawing replacements");
+        assertEquals(12, player4.getHand().size(), "Player 4 should have 12 cards after drawing replacements");
+
+        // Assert: The used cards should be in the discard pile
+        assertEquals(5, game.getDiscardPile().size(), "There should be 5 cards in the discard pile (3 from Player 2, 2 from Player 4)");
+    }
+
     @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);  // Restore System.out after test
