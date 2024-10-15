@@ -119,6 +119,17 @@ public class Game {
                 }
                 break;
 
+            case "Prosperity":
+                // Prosperity: All players draw 2 adventure cards
+                for (Player player : players) {
+                    for (int i = 0; i < 2; i++) {
+                        if (!adventureDeck.isEmpty()) {
+                            player.addCardToHand(adventureDeck.remove(0));
+                        }
+                    }
+                }
+                break;
+
             default:
                 // Handle other events as necessary
                 System.out.println("Unknown event: " + card.getEventName());
