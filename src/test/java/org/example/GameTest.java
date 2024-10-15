@@ -321,6 +321,45 @@ public class GameTest {
         assertFalse(game.isPlayerEligibleForNextStage(player4), "Player 4 should be eliminated from the quest");
     }
 
+    @Test
+    public void RESP_15_Test_1_awardShieldsUponQuestCompletion() {
+        // Assume Player 1 agrees to sponsor the quest
+        Player sponsor = game.getPlayers().get(0);
+        QuestCard questCard = new QuestCard(3);  // A quest with 3 stages
+        game.startPlayerTurnWithEventCard(sponsor, questCard);  // Initiates quest
+
+        // Simulate the sponsor setting up the quest
+        game.sponsorSetUpQuest(sponsor, questCard);
+
+        // Simulate players participating in the quest
+        Player player2 = game.getPlayers().get(1);
+        Player player4 = game.getPlayers().get(3);
+
+        game.playerDecisionForQuest(player2, true);  // Player 2 participates
+        game.playerDecisionForQuest(player4, true);  // Player 4 participates
+
+        // Simulate players setting up their attack for all 3 quest stages
+        game.playerSetsUpAttack(player2, 20);  // Player 2 has an attack value of 20
+        game.playerSetsUpAttack(player4, 15);  // Player 4 has an attack value of 15
+
+        // Assume the difficulty of all quest stages is 18
+        game.resolveQuestStage(18);  // Stage 1 resolved
+        game.resolveQuestStage(18);  // Stage 2 resolved
+        game.resolveQuestStage(18);  // Stage 3 resolved
+
+        // Award shields to the players who successfully completed the quest
+        game.awardShieldsForQuestCompletion(questCard);
+
+        // Assert: Player 2 should be awarded 3 shields (one per stage)
+        assertEquals(3, player2.getShields(), "Player 2 should be awarded 3 shields for completing the quest");
+
+        // Assert: Player 4 should not be awarded shields (since they failed in one of the stages)
+        assertEquals(0, player4.getShields(), "Player 4 should not be awarded shields as they failed a stage");
+
+        // Assert: The quest should be marked as completed
+        assertTrue(game.isQuestCompleted(), "The quest should be marked as completed after all stages are resolved");
+    }
+
     @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);  // Restore System.out after test
