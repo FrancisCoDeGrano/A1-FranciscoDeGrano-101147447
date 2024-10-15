@@ -100,6 +100,32 @@ public class GameTest {
         assertEquals(expectedOutput, actualOutput, "Should display winners and terminate the game");
     }
 
+    @Test
+    public void RESP_5_test_1_playerDrawsEventCard() {
+        // Assume it's Player 1's turn
+        Player currentPlayer = game.getPlayers().get(0);
+
+        // Find the first EventCard without removing other cards
+        Card drawnCard = null;
+        for (Card card : game.getEventDeck()) {
+            if (card instanceof EventCard) {
+                drawnCard = card;
+                break;
+            }
+        }
+
+        // Now remove the card only if it's an EventCard
+        game.getEventDeck().remove(drawnCard);
+
+        // Assert: The drawn card should be an EventCard
+        assertNotNull(drawnCard, "Player should draw an event card");
+        assertTrue(drawnCard instanceof EventCard, "The drawn card should be an EventCard");
+
+        // Assert: Event deck should have one less card
+        assertEquals(16, game.getEventDeck().size(), "Event deck should have 16 cards after one draw");
+    }
+
+
     @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);  // Restore System.out after test
