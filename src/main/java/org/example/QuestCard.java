@@ -7,8 +7,12 @@ public class QuestCard extends Card {
         this.numberOfStages = numberOfStages;
     }
 
-
     public int getNumberOfStages() {
         return numberOfStages;
+    }
+
+    @Override
+    public String getCardName() {
+        return "Quest with " + numberOfStages + " stages";  // Provide a meaningful name for the quest
     }
 }

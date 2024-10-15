@@ -16,4 +16,9 @@ public class WeaponCard extends Card {
     public int getValue() {
         return value;
     }
+
+    @Override
+    public String getCardName() {
+        return type;  // Return the weapon type (e.g., "Sword", "Lance", "Axe", etc.)
+    }
 }

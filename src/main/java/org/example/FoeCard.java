@@ -10,4 +10,9 @@ public class FoeCard extends Card {
     public int getValue() {
         return value;
     }
+
+    @Override
+    public String getCardName() {
+        return "F" + value;  // Return something like "F5", "F10", etc.
+    }
 }
