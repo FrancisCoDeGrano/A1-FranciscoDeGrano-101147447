@@ -125,6 +125,19 @@ public class GameTest {
         assertEquals(16, game.getEventDeck().size(), "Event deck should have 16 cards after one draw");
     }
 
+    @Test
+    public void RESP_6_test_1_handlePlagueEvent() { 
+        // Assume it's Player 1's turn
+        Player currentPlayer = game.getPlayers().get(0);
+
+        // Simulate drawing the "Plague" event card
+        EventCard plagueCard = new EventCard("Plague");
+        game.handleEventCard(plagueCard, currentPlayer);  // Method to be implemented
+
+        // Assert: Player 1 should lose 2 shields
+        assertEquals(-2, currentPlayer.getShields(), "Player should lose 2 shields from Plague event");
+    }
+
 
     @AfterEach
     public void restoreStreams() {
