@@ -212,6 +212,23 @@ public class GameTest {
         }
     }
 
+    @Test
+    public void RESP_11_Test_1_sponsorSetsUpValidQuest() {
+        // Assume Player 1 agrees to sponsor the quest
+        Player sponsor = game.getPlayers().get(0);
+        QuestCard questCard = new QuestCard(3);  // A quest with 3 stages
+        game.startPlayerTurnWithEventCard(sponsor, questCard);  // Initiates quest
+
+        // Simulate the sponsor setting up a valid quest
+        boolean questSetupSuccessful = game.sponsorSetUpQuest(sponsor, questCard);
+
+        // Assert: The sponsor should successfully set up the quest
+        assertTrue(questSetupSuccessful, "The sponsor should successfully set up a valid quest");
+
+        // Assert: The quest should be marked as ready after setup
+        assertTrue(game.isQuestReady(), "The quest should be ready after the sponsor sets it up");
+    }
+
     @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);  // Restore System.out after test
