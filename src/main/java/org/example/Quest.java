@@ -1,12 +1,11 @@
 package org.example;
 
-public class QuestCard extends Card {
+public class Quest {
     private int numberOfStages;
 
-    public QuestCard(int numberOfStages) {
+    public Quest(int numberOfStages) {
         this.numberOfStages = numberOfStages;
     }
-
 
     public int getNumberOfStages() {
         return numberOfStages;

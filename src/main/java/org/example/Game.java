@@ -5,6 +5,11 @@ import java.util.List;
 
 public class Game {
 
+    private boolean questInitiated;
+    private boolean questPhaseStarted;
+    private Quest currentQuest;
+    private Card lastDrawnEventCard;
+
     private List<Card> adventureDeck;
     private List<Card> eventDeck;
     private List<Player> players;
@@ -103,6 +108,10 @@ public class Game {
         return null;  // Return null if the deck is empty (though this shouldn't happen in normal play)
     }
 
+    public Card getLastDrawnEventCard() {
+        return lastDrawnEventCard;
+    }
+
     public void handleEventCard(EventCard card, Player currentPlayer) {
         // Handle the event based on its type
         switch (card.getEventName()) {
@@ -148,5 +157,41 @@ public class Game {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public void startPlayerTurnWithEventCard(Player currentPlayer, Card eventCard) {
+        // Simulate drawing a card and handling it
+        this.lastDrawnEventCard = eventCard;
+
+        // If it's a Quest card, initiate the quest
+        if (eventCard instanceof QuestCard) {
+            initiateQuest((QuestCard) eventCard);
+        }
+    }
+
+    public void initiateQuest(QuestCard questCard) {
+        // Initialize the quest
+        this.currentQuest = new Quest(questCard.getNumberOfStages());
+        this.questInitiated = true;
+
+        // Start the quest phase
+        startQuestPhase();
+    }
+
+    public void startQuestPhase() {
+        this.questPhaseStarted = true;
+        System.out.println("Quest phase started with " + currentQuest.getNumberOfStages() + " stages.");
+    }
+
+    public boolean isQuestInitiated() {
+        return this.questInitiated;
+    }
+
+    public boolean isQuestPhaseStarted() {
+        return this.questPhaseStarted;
+    }
+
+    public Quest getCurrentQuest() {
+        return this.currentQuest;
     }
 }
