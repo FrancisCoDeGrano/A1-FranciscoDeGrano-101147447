@@ -11,6 +11,7 @@ public class Game {
     private boolean questPhaseStarted;
     private boolean sponsorshipPrompted;
     private boolean questReady;
+    private boolean questCompleted;
 
     private Quest currentQuest;
     private Card lastDrawnEventCard;
@@ -330,6 +331,22 @@ public class Game {
     // Check if a player is eligible for the next quest stage
     public boolean isPlayerEligibleForNextStage(Player player) {
         return eligiblePlayers.contains(player);  // Return true if the player succeeded in the stage
+    }
+
+    // Method to award shields to players who successfully completed the quest
+    public void awardShieldsForQuestCompletion(QuestCard questCard) {
+        int stages = questCard.getNumberOfStages();
+        for (Player player : eligiblePlayers) {
+            // Award the number of shields equal to the number of quest stages
+            player.setShields(player.getShields() + stages);
+            System.out.println("Player " + player.getId() + " is awarded " + stages + " shields.");
+        }
+        this.questCompleted = true;
+    }
+
+    // Check if the quest is completed
+    public boolean isQuestCompleted() {
+        return this.questCompleted;
     }
 
 
