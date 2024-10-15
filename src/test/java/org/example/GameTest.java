@@ -1,8 +1,12 @@
 package org.example;
 
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,12 +21,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GameTest {
 
     private Game game;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
 
     @BeforeEach
     public void setUp() {
         game = new Game();         // This will initialize the game
         game.setUpDecks();         // Set Up the adventure and event decks
         game.dealCardsToPlayers(); // Deal 12 Cards to Players
+
+        // Redirect System.out for testing output
+        System.setOut(new PrintStream(outContent));
     }
 
     @Test
@@ -68,6 +77,32 @@ public class GameTest {
         assertEquals(2, winners.size(), "There should be 2 winners");
         assertTrue(winners.contains(game.getPlayers().get(0)), "Player 1 should be a winner");
         assertTrue(winners.contains(game.getPlayers().get(2)), "Player 3 should be a winner");
+    }
+
+    @Test
+    public void RESP_4_test_1_displayWinnersAndTerminate() {
+        // Simulate players gaining shields
+        game.getPlayers().get(0).setShields(7);  // Player 1 reaches 7 shields
+        game.getPlayers().get(1).setShields(8);  // Player 2 reaches 8 shields
+
+        // Act: Display winners and terminate
+        game.displayWinnersAndTerminate();  // Method to be implemented
+
+        // Adjust expected output to handle any trailing whitespace or newlines
+        String expectedOutput = "Winners: Player 1, Player 2\nGame Over";
+        String actualOutput = outContent.toString().trim();  // Trim output to remove extra spaces/newlines
+
+        // Print outputs for debugging
+        System.out.println("Expected Output: " + expectedOutput);
+        System.out.println("Actual Output: " + actualOutput);
+
+        // Assert: Check if the actual output matches the expected output
+        assertEquals(expectedOutput, actualOutput, "Should display winners and terminate the game");
+    }
+
+    @AfterEach
+    public void restoreStreams() {
+        System.setOut(originalOut);  // Restore System.out after test
     }
 
 
