@@ -15,7 +15,8 @@ public class Game {
 
     private List<Card> adventureDeck;
     private List<Card> eventDeck;
-    private List<org.example.Player> players;
+    private List<Card> discardPile = new ArrayList<>();
+    private List<Player> players;
     private List<Player> eligiblePlayers = new ArrayList<>();
 
 
@@ -259,6 +260,36 @@ public class Game {
     // Check if a player is eligible for the quest
     public boolean isPlayerEligibleForQuest(Player player) {
         return eligiblePlayers.contains(player);
+    }
+
+    // Method to simulate a player using cards for a quest stage
+    public void playerUsesCardsForQuest(Player player, int numberOfCardsUsed) {
+        // Simulate the player using the top cards from their hand
+        List<Card> usedCards = new ArrayList<>();
+        for (int i = 0; i < numberOfCardsUsed; i++) {
+            if (!player.getHand().isEmpty()) {
+                usedCards.add(player.getHand().remove(0));  // Remove the card from the player's hand
+            }
+        }
+        discardPile.addAll(usedCards);  // Add used cards to the discard pile
+    }
+
+    // Method to discard used cards and draw replacements for players
+    public void discardUsedCardsAndDrawReplacements() {
+        for (Player player : players) {
+            // Calculate how many cards the player needs to draw to have 12 cards again
+            int cardsNeeded = 12 - player.getHand().size();
+
+            // Draw replacement cards from the adventure deck
+            for (int i = 0; i < cardsNeeded; i++) {
+                if (!adventureDeck.isEmpty()) {
+                    player.addCardToHand(adventureDeck.remove(0));  // Draw a card from the deck
+                }
+            }
+        }
+    }
+    public List<Card> getDiscardPile() {
+        return discardPile;
     }
 
 
