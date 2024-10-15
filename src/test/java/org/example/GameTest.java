@@ -286,6 +286,41 @@ public class GameTest {
         assertEquals(5, game.getDiscardPile().size(), "There should be 5 cards in the discard pile (3 from Player 2, 2 from Player 4)");
     }
 
+    @Test
+    public void RESP_14_Test_1_resolveQuestStage() {
+        // Assume Player 1 agrees to sponsor the quest
+        Player sponsor = game.getPlayers().get(0);
+        QuestCard questCard = new QuestCard(3);  // A quest with 3 stages
+        game.startPlayerTurnWithEventCard(sponsor, questCard);  // Initiates quest
+
+        // Simulate the sponsor setting up the quest
+        game.sponsorSetUpQuest(sponsor, questCard);
+
+        // Simulate players participating in the quest
+        Player player2 = game.getPlayers().get(1);
+        Player player4 = game.getPlayers().get(3);
+
+        game.playerDecisionForQuest(player2, true);  // Player 2 participates
+        game.playerDecisionForQuest(player4, true);  // Player 4 participates
+
+        // Simulate players setting up their attack for the first quest stage
+        game.playerSetsUpAttack(player2, 20);  // Player 2 has an attack value of 20
+        game.playerSetsUpAttack(player4, 15);  // Player 4 has an attack value of 15
+
+        // Assume the difficulty of the current quest stage is 18
+        boolean stageResolved = game.resolveQuestStage(18);
+
+        // Assert: Player 2 should succeed, Player 4 should fail
+        assertTrue(game.didPlayerSucceedInStage(player2), "Player 2 should succeed in the stage");
+        assertFalse(game.didPlayerSucceedInStage(player4), "Player 4 should fail in the stage");
+
+        // Assert: Player 2 should advance to the next stage
+        assertTrue(game.isPlayerEligibleForNextStage(player2), "Player 2 should advance to the next stage");
+
+        // Assert: Player 4 should be eliminated from further quest participation
+        assertFalse(game.isPlayerEligibleForNextStage(player4), "Player 4 should be eliminated from the quest");
+    }
+
     @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);  // Restore System.out after test
