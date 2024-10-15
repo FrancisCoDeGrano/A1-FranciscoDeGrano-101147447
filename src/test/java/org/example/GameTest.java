@@ -126,7 +126,7 @@ public class GameTest {
     }
 
     @Test
-    public void RESP_6_test_1_handlePlagueEvent() { 
+    public void RESP_6_test_1_handlePlagueEvent() {
         // Assume it's Player 1's turn
         Player currentPlayer = game.getPlayers().get(0);
 
@@ -136,6 +136,26 @@ public class GameTest {
 
         // Assert: Player 1 should lose 2 shields
         assertEquals(-2, currentPlayer.getShields(), "Player should lose 2 shields from Plague event");
+    }
+
+    @Test
+    public void RESP_7_test_1_handleQueensFavorEvent() {
+        // Assume it's Player 1's turn
+        Player currentPlayer = game.getPlayers().get(0);
+
+        // Assert the player starts with 12 cards
+        assertEquals(12, currentPlayer.getHand().size(), "Player should start with 12 cards");
+
+        // Simulate drawing the "Queen’s favor" event card
+        EventCard queensFavorCard = new EventCard("Queen’s favor");
+
+        // This will fail because handleEventCard is not implemented yet
+        game.handleEventCard(queensFavorCard, currentPlayer);
+
+        // Assert: Player should now have 14 cards after the Queen's favor event
+        assertEquals(14, currentPlayer.getHand().size(), "Player should have 14 cards after Queen's favor event");
+
+        // We are not implementing the trimming part yet (handled later in UC-03)
     }
 
 
