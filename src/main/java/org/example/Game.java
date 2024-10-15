@@ -1,7 +1,9 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Game {
 
@@ -16,8 +18,11 @@ public class Game {
     private List<Card> adventureDeck;
     private List<Card> eventDeck;
     private List<Card> discardPile = new ArrayList<>();
+
     private List<Player> players;
     private List<Player> eligiblePlayers = new ArrayList<>();
+
+    private Map<Player, Integer> playerAttacks = new HashMap<>();
 
 
     public Game(){
@@ -290,6 +295,41 @@ public class Game {
     }
     public List<Card> getDiscardPile() {
         return discardPile;
+    }
+
+    // Method to simulate a player setting up their attack for the stage
+    public void playerSetsUpAttack(Player player, int attackValue) {
+        playerAttacks.put(player, attackValue);  // Store the player's attack value
+    }
+
+    // Method to resolve the quest stage by comparing attack vs. stage difficulty
+    public boolean resolveQuestStage(int stageDifficulty) {
+        eligiblePlayers.clear();  // Reset eligible players for this stage
+
+        for (Player player : players) {
+            if (playerAttacks.containsKey(player)) {
+                int playerAttack = playerAttacks.get(player);
+                if (playerAttack >= stageDifficulty) {
+                    // Player succeeds
+                    eligiblePlayers.add(player);
+                    System.out.println("Player " + player.getId() + " succeeded in the quest stage.");
+                } else {
+                    // Player fails and is not added to the eligible list
+                    System.out.println("Player " + player.getId() + " failed the quest stage.");
+                }
+            }
+        }
+        return true;  // Stage resolved
+    }
+
+    // Check if a player succeeded in the current stage
+    public boolean didPlayerSucceedInStage(Player player) {
+        return eligiblePlayers.contains(player);  // Check if the player is eligible for the next stage
+    }
+
+    // Check if a player is eligible for the next quest stage
+    public boolean isPlayerEligibleForNextStage(Player player) {
+        return eligiblePlayers.contains(player);  // Return true if the player succeeded in the stage
     }
 
 
