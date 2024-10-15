@@ -16,6 +16,7 @@ public class Game {
     private List<Card> adventureDeck;
     private List<Card> eventDeck;
     private List<org.example.Player> players;
+    private List<Player> eligiblePlayers = new ArrayList<>();
 
 
     public Game(){
@@ -243,6 +244,21 @@ public class Game {
 
     public boolean isQuestReady() {
         return this.questReady;
+    }
+
+    // Method to handle a player's decision to participate or withdraw
+    public void playerDecisionForQuest(Player player, boolean participate) {
+        if (participate) {
+            eligiblePlayers.add(player);  // Add player to eligible list if they participate
+            System.out.println("Player " + player.getId() + " has decided to participate in the quest.");
+        } else {
+            System.out.println("Player " + player.getId() + " has decided to withdraw from the quest.");
+        }
+    }
+
+    // Check if a player is eligible for the quest
+    public boolean isPlayerEligibleForQuest(Player player) {
+        return eligiblePlayers.contains(player);
     }
 
 
