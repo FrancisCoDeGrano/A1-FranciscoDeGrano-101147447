@@ -7,6 +7,15 @@ public class Game {
 
     private List<Card> adventureDeck;
     private List<Card> eventDeck;
+    private List<Player> players;
+
+    public Game(){
+        players = new ArrayList<>();
+        // Initialize the 4 players
+        for (int i = 0; i < 4; i++) {
+            players.add(new Player());
+        }
+    }
 
     public void setUpDecks() {
         adventureDeck = new ArrayList<>();
@@ -45,11 +54,24 @@ public class Game {
         eventDeck.add(new EventCard("Prosperity"));
     }
 
+    public void dealCardsToPlayers() {
+        // Distribute 12 cards to each player
+        for (Player player : players) {
+            for (int i = 0; i < 12; i++) {
+                player.addCardToHand(adventureDeck.remove(0));  // Deal the top card
+            }
+        }
+    }
+
     public List<Card> getAdventureDeck() {
         return adventureDeck;
     }
 
     public List<Card> getEventDeck() {
         return eventDeck;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 }
