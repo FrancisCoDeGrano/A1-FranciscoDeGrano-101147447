@@ -95,6 +95,14 @@ public class Game {
         System.out.println("Game Over");
     }
 
+    public Card drawEventCard(Player currentPlayer) {
+        // Draw the top card from the event deck
+        if (!eventDeck.isEmpty()) {
+            return eventDeck.remove(0);  // Draw and remove the top card
+        }
+        return null;  // Return null if the deck is empty (though this shouldn't happen in normal play)
+    }
+
     public List<Card> getAdventureDeck() {
         return adventureDeck;
     }
