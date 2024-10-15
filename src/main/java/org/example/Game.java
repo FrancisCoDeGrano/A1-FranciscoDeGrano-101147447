@@ -8,12 +8,15 @@ public class Game {
     private boolean questInitiated;
     private boolean questPhaseStarted;
     private boolean sponsorshipPrompted;
+    private boolean questReady;
+
     private Quest currentQuest;
     private Card lastDrawnEventCard;
 
     private List<Card> adventureDeck;
     private List<Card> eventDeck;
     private List<org.example.Player> players;
+
 
     public Game(){
         players = new ArrayList<>();
@@ -215,6 +218,31 @@ public class Game {
 
     public boolean isSponsorshipPrompted() {
         return this.sponsorshipPrompted;
+    }
+
+    // Method to allow the sponsor to set up a valid quest
+    public boolean sponsorSetUpQuest(Player sponsor, QuestCard questCard) {
+        // Logic for setting up a valid quest (simulating card selection for each stage)
+        System.out.println("Player " + sponsor.getId() + " is setting up the quest...");
+
+        // Simulate the sponsor setting up a valid quest (you can expand this logic)
+        if (sponsorHasValidCardsForQuest(sponsor, questCard)) {
+            this.questReady = true;  // Mark the quest as ready if setup is successful
+            return true;  // Indicate successful setup
+        }
+
+        return false;  // Return false if setup fails
+    }
+
+    // Simulated check for valid cards for the quest setup
+    private boolean sponsorHasValidCardsForQuest(Player sponsor, QuestCard questCard) {
+        // This method can check if the sponsor has valid cards for each stage of the quest
+        // For now, we'll assume they always have valid cards for simplicity
+        return true;
+    }
+
+    public boolean isQuestReady() {
+        return this.questReady;
     }
 
 
