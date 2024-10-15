@@ -28,7 +28,7 @@ public class GameTest {
     public void setUp() {
         game = new Game();         // This will initialize the game
         game.setUpDecks();         // Set Up the adventure and event decks
-        game.dealCardsToPlayers(); // Deal 12 Cards to Players
+
 
         // Redirect System.out for testing output
         System.setOut(new PrintStream(outContent));
@@ -140,6 +140,7 @@ public class GameTest {
 
     @Test
     public void RESP_7_test_1_handleQueensFavorEvent() {
+        game.dealCardsToPlayers();
         // Assume it's Player 1's turn
         Player currentPlayer = game.getPlayers().get(0);
 
@@ -160,6 +161,7 @@ public class GameTest {
 
     @Test
     public void RESP_8_test_1_handleProsperityEvent() {
+        game.dealCardsToPlayers();
         // Ensure all players start with 12 cards
         for (Player player : game.getPlayers()) {
             assertEquals(12, player.getHand().size(), "Each player should start with 12 cards");
@@ -261,6 +263,7 @@ public class GameTest {
 
     @Test
     public void RESP_13_Test_1_discardUsedCardsAndDrawReplacements() {
+        game.dealCardsToPlayers();
         // Assume Player 1 agrees to sponsor the quest
         Player sponsor = game.getPlayers().get(0);
         QuestCard questCard = new QuestCard(3);  // A quest with 3 stages
