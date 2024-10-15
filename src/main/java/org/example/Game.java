@@ -105,12 +105,24 @@ public class Game {
 
     public void handleEventCard(EventCard card, Player currentPlayer) {
         // Handle the event based on its type
-        if ("Plague".equals(card.getEventName())) {
-            // Plague: Current player loses 2 shields
-            currentPlayer.setShields(currentPlayer.getShields() - 2);
-        } else {
-            // Handle other events as necessary
-            System.out.println("Unknown event: " + card.getEventName());
+        switch (card.getEventName()) {
+            case "Plague":
+                // Plague: Current player loses 2 shields
+                currentPlayer.setShields(currentPlayer.getShields() - 2);
+                break;
+            case "Queen’s favor":
+                // Queen’s favor: Current player draws 2 adventure cards
+                for (int i = 0; i < 2; i++) {
+                    if (!adventureDeck.isEmpty()) {
+                        currentPlayer.addCardToHand(adventureDeck.remove(0));
+                    }
+                }
+                break;
+
+            default:
+                // Handle other events as necessary
+                System.out.println("Unknown event: " + card.getEventName());
+                break;
         }
     }
 
