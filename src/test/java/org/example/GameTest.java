@@ -196,6 +196,22 @@ public class GameTest {
         assertTrue(game.isQuestPhaseStarted(), "Quest phase should be ready to start after a Quest card is drawn");
     }
 
+    @Test
+    public void RESP_10_Test_1_promptPlayersForQuestSponsorship() {
+        // Assume it's Player 1's turn and they draw a Quest card
+        Player currentPlayer = game.getPlayers().get(0);
+        QuestCard questCard = new QuestCard(3);  // A quest with 3 stages
+        game.startPlayerTurnWithEventCard(currentPlayer, questCard);  // Simulate player turn
+
+        // Assert: The game should prompt each player for sponsorship
+        assertTrue(game.isSponsorshipPrompted(), "The game should prompt players for sponsorship when a quest is initiated");
+
+        // Assert: Ensure that all players are prompted to sponsor the quest
+        for (Player player : game.getPlayers()) {
+            assertTrue(player.wasPromptedForSponsorship(), "Player should be prompted for quest sponsorship");
+        }
+    }
+
     @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);  // Restore System.out after test
