@@ -63,6 +63,19 @@ public class Game {
         }
     }
 
+    public List<Player> checkForWinners() {
+        List<Player> winners = new ArrayList<>();
+
+        // Check each player for 7 or more shields
+        for (Player player : players) {
+            if (player.getShields() >= 7) {
+                winners.add(player);
+            }
+        }
+
+        return winners;
+    }
+
     public List<Card> getAdventureDeck() {
         return adventureDeck;
     }
