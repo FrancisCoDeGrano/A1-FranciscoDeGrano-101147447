@@ -229,6 +229,36 @@ public class GameTest {
         assertTrue(game.isQuestReady(), "The quest should be ready after the sponsor sets it up");
     }
 
+    @Test
+    public void RESP_12_Test_1_playersDecideToParticipateOrWithdraw() {
+        // Assume Player 1 agrees to sponsor the quest
+        Player sponsor = game.getPlayers().get(0);
+        QuestCard questCard = new QuestCard(3);  // A quest with 3 stages
+        game.startPlayerTurnWithEventCard(sponsor, questCard);  // Initiates quest
+
+        // Simulate the sponsor setting up the quest
+        game.sponsorSetUpQuest(sponsor, questCard);
+
+        // Simulate players deciding to participate or withdraw
+        Player player2 = game.getPlayers().get(1);
+        Player player3 = game.getPlayers().get(2);
+        Player player4 = game.getPlayers().get(3);
+
+        // Player 2 decides to participate
+        game.playerDecisionForQuest(player2, true);  // true means participate
+        // Player 3 decides to withdraw
+        game.playerDecisionForQuest(player3, false);  // false means withdraw
+        // Player 4 decides to participate
+        game.playerDecisionForQuest(player4, true);
+
+        // Assert: Player 2 and Player 4 should be eligible for the quest
+        assertTrue(game.isPlayerEligibleForQuest(player2), "Player 2 should be eligible for the quest");
+        assertTrue(game.isPlayerEligibleForQuest(player4), "Player 4 should be eligible for the quest");
+
+        // Assert: Player 3 should not be eligible for the quest
+        assertFalse(game.isPlayerEligibleForQuest(player3), "Player 3 should not be eligible for the quest after withdrawing");
+    }
+
     @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);  // Restore System.out after test
