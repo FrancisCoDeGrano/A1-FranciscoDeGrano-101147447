@@ -177,6 +177,25 @@ public class GameTest {
         // Assert: If a player exceeds 12 cards, they need to trim (handled later in UC-03)
     }
 
+    // INTEGRATION TESTING BEGINS
+    @Test
+    public void RESP_9_Test_1_drawQuestCardAndInitiateQuest() {
+        // Assume it's Player 1's turn and they draw a Quest card
+        Player currentPlayer = game.getPlayers().get(0);
+        QuestCard questCard = new QuestCard(3);  // A quest with 3 stages
+        game.startPlayerTurnWithEventCard(currentPlayer, questCard);  // High-level method to handle the player's turn
+
+        // Assert: The game should transition to the quest phase
+        assertTrue(game.isQuestInitiated(), "A quest should be initiated when a Quest card is drawn");
+
+        // Assert: The quest should be initialized with the correct number of stages
+        assertNotNull(game.getCurrentQuest(), "A quest should be initialized");
+        assertEquals(3, game.getCurrentQuest().getNumberOfStages(), "Quest should have 3 stages as specified by the Quest card");
+
+        // Assert: Ensure that the quest phase is ready to start
+        assertTrue(game.isQuestPhaseStarted(), "Quest phase should be ready to start after a Quest card is drawn");
+    }
+
     @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);  // Restore System.out after test
