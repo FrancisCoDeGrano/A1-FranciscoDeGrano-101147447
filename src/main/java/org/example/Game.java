@@ -7,18 +7,19 @@ public class Game {
 
     private boolean questInitiated;
     private boolean questPhaseStarted;
+    private boolean sponsorshipPrompted;
     private Quest currentQuest;
     private Card lastDrawnEventCard;
 
     private List<Card> adventureDeck;
     private List<Card> eventDeck;
-    private List<Player> players;
+    private List<org.example.Player> players;
 
     public Game(){
         players = new ArrayList<>();
         // Initialize the 4 players
         for (int i = 0; i < 4; i++) {
-            players.add(new Player());
+            players.add(new org.example.Player(i+1));
         }
     }
 
@@ -61,18 +62,18 @@ public class Game {
 
     public void dealCardsToPlayers() {
         // Distribute 12 cards to each player
-        for (Player player : players) {
+        for (org.example.Player player : players) {
             for (int i = 0; i < 12; i++) {
                 player.addCardToHand(adventureDeck.remove(0));  // Deal the top card
             }
         }
     }
 
-    public List<Player> checkForWinners() {
-        List<Player> winners = new ArrayList<>();
+    public List<org.example.Player> checkForWinners() {
+        List<org.example.Player> winners = new ArrayList<>();
 
         // Check each player for 7 or more shields
-        for (Player player : players) {
+        for (org.example.Player player : players) {
             if (player.getShields() >= 7) {
                 winners.add(player);
             }
@@ -82,7 +83,7 @@ public class Game {
     }
 
     public void displayWinnersAndTerminate() {
-        List<Player> winners = checkForWinners();
+        List<org.example.Player> winners = checkForWinners();
 
         if (winners.isEmpty()) {
             System.out.println("No winners this time.");
@@ -100,7 +101,7 @@ public class Game {
         System.out.println("Game Over");
     }
 
-    public Card drawEventCard(Player currentPlayer) {
+    public Card drawEventCard(org.example.Player currentPlayer) {
         // Draw the top card from the event deck
         if (!eventDeck.isEmpty()) {
             return eventDeck.remove(0);  // Draw and remove the top card
@@ -112,7 +113,7 @@ public class Game {
         return lastDrawnEventCard;
     }
 
-    public void handleEventCard(EventCard card, Player currentPlayer) {
+    public void handleEventCard(EventCard card, org.example.Player currentPlayer) {
         // Handle the event based on its type
         switch (card.getEventName()) {
             case "Plague":
@@ -130,7 +131,7 @@ public class Game {
 
             case "Prosperity":
                 // Prosperity: All players draw 2 adventure cards
-                for (Player player : players) {
+                for (org.example.Player player : players) {
                     for (int i = 0; i < 2; i++) {
                         if (!adventureDeck.isEmpty()) {
                             player.addCardToHand(adventureDeck.remove(0));
@@ -155,11 +156,11 @@ public class Game {
         return eventDeck;
     }
 
-    public List<Player> getPlayers() {
+    public List<org.example.Player> getPlayers() {
         return players;
     }
 
-    public void startPlayerTurnWithEventCard(Player currentPlayer, Card eventCard) {
+    public void startPlayerTurnWithEventCard(org.example.Player currentPlayer, Card eventCard) {
         // Simulate drawing a card and handling it
         this.lastDrawnEventCard = eventCard;
 
@@ -176,6 +177,7 @@ public class Game {
 
         // Start the quest phase
         startQuestPhase();
+        promptForSponsorship();
     }
 
     public void startQuestPhase() {
@@ -194,4 +196,26 @@ public class Game {
     public Quest getCurrentQuest() {
         return this.currentQuest;
     }
+
+    // Method to prompt players for quest sponsorship
+    public void promptForSponsorship() {
+        for (org.example.Player player : players) {
+            promptPlayerForSponsorship(player);
+        }
+
+        // Set the flag to indicate that players have been prompted
+        this.sponsorshipPrompted = true;
+    }
+
+    // Simulate prompting each player for sponsorship
+    private void promptPlayerForSponsorship(org.example.Player player) {
+        System.out.println("Player " + player.getId() + ", do you want to sponsor the quest?");
+        player.setPromptedForSponsorship(true);  // Simulate the prompt
+    }
+
+    public boolean isSponsorshipPrompted() {
+        return this.sponsorshipPrompted;
+    }
+
+
 }
